@@ -98,6 +98,7 @@ def escolher_palavra_aleatoria(caminho_do_arquivo):
 def jogar():
     """Função principal que executa o jogo da forca."""
     
+    # --- MENU DE CATEGORIAS (sem alterações) ---
     categorias = {
         "1": {"nome": "Geral", "arquivo": "_all_words.txt"},
         "2": {"nome": "Frutas", "arquivo": "_fruit_words.txt"},
@@ -153,21 +154,20 @@ def jogar():
 
         palavra_para_mostrar = ""
         for letra_original in palavra_secreta:
-            if letra_original == ' ':
-                palavra_para_mostrar += "  "
-                continue
-
-            letra_normalizada = normalizar_string(letra_original)
-            if letra_normalizada in letras_acertadas:
-                palavra_para_mostrar += letra_original.upper() + " "
+            if not letra_original.isalpha():
+                palavra_para_mostrar += letra_original + " " 
             else:
-                palavra_para_mostrar += "_ "
+                letra_normalizada = normalizar_string(letra_original)
+                if letra_normalizada in letras_acertadas:
+                    palavra_para_mostrar += letra_original.upper() + " "
+                else:
+                    palavra_para_mostrar += "_ "
         print(f"Palavra: {palavra_para_mostrar}\n")
 
         print(f"Letras erradas: {' '.join(sorted(letras_erradas))}")
         print(f"Você tem {max_erros - erros} tentativas restantes.")
 
-        acertos_necessarios = set(c for c in palavra_secreta_normalizada if c.strip())
+        acertos_necessarios = set(c for c in palavra_secreta_normalizada if c.isalpha())
         if set(letras_acertadas) == acertos_necessarios:
             print("\nParabéns! Você acertou a palavra!")
             print(f"A palavra era: {palavra_secreta.upper()}")
